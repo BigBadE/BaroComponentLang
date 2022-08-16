@@ -1,0 +1,11 @@
+rootProject.name = 'BaroComponentLang'
+
+
+include(':ast')
+project(':ast').projectDir = file('ast')
+
+include(':compiler')
+project(':compiler').projectDir = file('compiler')
+
+include(':printer')
+project(':printer').projectDir = file('printer')

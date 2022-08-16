@@ -1,0 +1,10 @@
+dependencies {
+    implementation project(':asl')
+    implementation project(':compiler')
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'software.bigbade.barocomponentlang.Printer'
+    }
+}
