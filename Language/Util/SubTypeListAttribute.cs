@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace AST.Util
+namespace Language.Util
 {
     /// <summary>
     /// Gets all the subtypes of a type and adds it to a list,

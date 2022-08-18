@@ -1,4 +1,4 @@
-﻿namespace AST.Tree
+﻿namespace Language.Listeners
 {
     public class ConnectionPin
     {

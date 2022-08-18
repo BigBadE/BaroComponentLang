@@ -1,4 +1,4 @@
-﻿namespace AST.Tree
+﻿namespace Language.Structure
 {
     public interface IVariableOwner
     {

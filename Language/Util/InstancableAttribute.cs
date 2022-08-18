@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Reflection;
 
-namespace AST.Util
+namespace Language.Util
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class InstancableAttribute : Attribute
     {
-        public string name;
+        public string Name;
 
+        public InstancableAttribute(string name)
+        {
+            Name = name;
+        }
+        
         public static T Construct<T>(Type type)
         {
             return (T) type.GetConstructor(BindingFlags.Default, Array.Empty<Type>())!

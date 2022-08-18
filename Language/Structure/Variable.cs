@@ -1,36 +1,34 @@
 ﻿using System;
+using Language.Effects;
 
-namespace AST.Tree
+namespace Language.Structure
 {
     public class Variable
     {
-        public IVariableOwner? parent;
-        public object defaultValue;
-        public string name;
+        public readonly IVariableOwner? Parent;
+        public readonly object? DefaultValue;
+        public readonly string Name;
 
+        public Variable(string name, IVariableOwner? parent, object? defaultValue = null)
+        {
+            Parent = parent;
+            DefaultValue = defaultValue;
+            Name = name;
+        }
+        
         public static Variable Parse(IVariableOwner? owner, string name, string? value)
         {
-            Variable variable = new()
-            {
-                parent = owner,
-                name = name
-            };
             if (value == null)
             {
-                return variable;
+                return new Variable(name, owner);
             }
             Effect? found = Effect.Parse(value);
             if (found == null)
             {
                 throw new Exception("Unknown effect " + found);
             }
-            if (found.Args() != 0)
-            {
-                throw new Exception("Variable " + name + " has a non-constant value. This will be supported later!");
-            }
 
-            variable.defaultValue = found.Precompute();
-            return variable;
+            return new Variable(name, owner, found.Precompute());
         }
     }
 }

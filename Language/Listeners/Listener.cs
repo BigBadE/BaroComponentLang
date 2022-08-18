@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
-using AST.Util;
+using Language.Util;
 
-namespace AST.Tree
+namespace Language.Listeners
 {
     public abstract class Listener
     {
         [SubTypeList(typeof(Listener))]
         public static List<Type> Listeners;
 
-        public ConnectionPin pin;
+        public ConnectionPin Pin { get; private set; }
 
         public abstract ConnectionPin? GetPin(string name);
         
@@ -20,10 +21,11 @@ namespace AST.Tree
             
             Listener target = InstancableAttribute.Construct<Listener>(
                 Listeners.Find(expression => 
-                    expression.GetCustomAttribute<InstancableAttribute>()?.name == split[0].Trim()) ??
+                    expression.GetCustomAttribute<InstancableAttribute>()?.Name == split[0].Trim()) ??
                 throw new Exception("No device called " + split[0].Trim()));
 
-            target.pin = target.GetPin(split[1].Trim()) ?? throw new Exception("No pin called " + split[1].Trim());
+            target.Pin = target.GetPin(split[1].Trim()) ?? 
+                               throw new Exception("No pin called " + split[1].Trim());
             return target;
         }
     }

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using AST.Util;
+using Language.Patterns;
+using Language.Util;
 
-namespace AST.Tree
+namespace Language.Effects
 {
     public abstract class Effect
     {
@@ -12,10 +13,12 @@ namespace AST.Tree
         public abstract int Args();
 
         public abstract object Precompute();
+
+        public abstract Pattern Pattern();
         
-        public static Effect? Parse(string effect, bool nullable = false)
+        public static ParseResult<Effect> Parse(string effect, bool nullable = false)
         {
-            //TODO
+            
             return null;
         }
     }
