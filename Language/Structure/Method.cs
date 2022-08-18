@@ -2,7 +2,7 @@
 
 namespace AST.Tree
 {
-    public class Method
+    public class Method : IVariableOwner
     {
         public string Name;
         public List<Expression> Expressions = new();

@@ -1,5 +1,8 @@
-﻿using System;
-using AST.Tree;
+﻿using AST.Tree;
+using Language.Effects;
+using Language.Expressions;
+using Language.Expressions.Control;
+using Language.Structure;
 
 namespace AST.Parser
 {
@@ -8,9 +11,9 @@ namespace AST.Parser
         private ControlExpression? _parent;
         private Method _method;
 
-        public void Start()
+        public void Start(string name, string args)
         {
-            _method = new Method();
+            _method = Method.Parse(name, args);
             _parent = null;
         }
         
@@ -25,7 +28,7 @@ namespace AST.Parser
                 }
 
                 AddLine(_parent);
-                _parent = _parent.parent;
+                _parent = _parent.Parent;
             }
             else if(line.EndsWith("{"))
             {
@@ -49,7 +52,7 @@ namespace AST.Parser
             }
             else
             {
-                _parent.lines.Add(line);
+                _parent.Lines.Add(line);
             }
         }
     }

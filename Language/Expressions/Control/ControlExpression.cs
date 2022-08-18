@@ -6,17 +6,17 @@ using AST.Util;
 
 namespace AST.Tree
 {
-    public abstract class ControlExpression : Expression
+    public abstract class ControlExpression : Expression, IVariableOwner
     {
         [SubTypeList(typeof(ControlExpression))]
         public static List<Type> ControlExpressions;
 
-        public ControlExpression parent;
+        public ControlExpression? parent;
 
         public Effect[] args;
         public List<Expression> lines = new();
         
-        public static ControlExpression Parse(string name, string args, ControlExpression parent)
+        public static ControlExpression Parse(string name, string args, ControlExpression? parent)
         {
             ControlExpression target = InstancableAttribute.Construct<ControlExpression>(
                 ControlExpressions.Find(expression => 

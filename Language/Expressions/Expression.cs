@@ -4,7 +4,7 @@ using AST.Util;
 
 namespace AST.Tree
 {
-    public class Expression
+    public abstract class Expression
     {
         [SubTypeList(typeof(Expression))]
         public static List<Type> Expressions;
