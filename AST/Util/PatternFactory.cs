@@ -10,6 +10,7 @@ namespace AST.Util
         public static Pattern Compile(string input)
         {
             int start = 0;
+            input = input.Replace(" ", null);
             return new Pattern(Compile(input, ref start).ToArray());
         }
         
@@ -30,11 +31,21 @@ namespace AST.Util
                 switch (current)
                 {
                     case '[':
+                        if (i != start)
+                        {
+                            parts.Add(new LiteralPatternPart(input.Substring(start, i)));
+                        }
+                        
                         start = ++i;
                         parts.Add(new OptionalPatternPart(new Pattern(
                             Compile(input, ref start, '[').ToArray())));
                         break;
                     case '%':
+                        if (i != start)
+                        {
+                            parts.Add(new LiteralPatternPart(input.Substring(start, i)));
+                        }
+
                         start = ++i;
                         string found = (Compile(input, ref start, '%')[0] as LiteralPatternPart)!.Literal;
 
@@ -57,12 +68,7 @@ namespace AST.Util
                                 break;
                             default:
                                 throw new Exception("Unknown special pattern " + found);
-                                break;
                         }
-                        break;
-                    default: 
-                        parts.Add(new LiteralPatternPart(input.Substring(start, i)));
-                        start = i;
                         break;
                 }
             }

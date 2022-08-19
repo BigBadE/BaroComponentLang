@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Language.Util
@@ -14,6 +15,11 @@ namespace Language.Util
 
         public ParseResult Matches(char[] input, int start, int length = -1)
         {
+            if (length == -1)
+            {
+                length = input.Length;
+            }
+            
             int oldStart = start;
             bool found = true;
             List<object> results = new();
@@ -47,7 +53,7 @@ namespace Language.Util
                     }
                 }
 
-                if (start < length && !_parts[0].Recursable() && results.Any())
+                if (start < length && (!_parts[0].Recursable() || results.Any()))
                 {
                     return new ParseResult(-1);
                 }

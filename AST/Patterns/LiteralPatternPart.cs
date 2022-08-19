@@ -1,4 +1,6 @@
-﻿using Language.Util;
+﻿using System;
+using System.Diagnostics;
+using Language.Util;
 
 namespace AST.Patterns
 {
@@ -16,7 +18,7 @@ namespace AST.Patterns
             int offset = 0;
             for (int i = 0; i - offset < Literal.Length; i++)
             {
-                if (i > input.Length)
+                if (start + i == input.Length)
                 {
                     return new ParseResult(-1);
                 }
@@ -31,7 +33,7 @@ namespace AST.Patterns
                     return new ParseResult(-1);
                 }
             }
-
+       
             return new ParseResult(Literal.Length + offset);
         }
 

@@ -10,7 +10,7 @@ namespace Language.Util
 
         public InstancableAttribute(string name)
         {
-            Pattern = name.Replace(" ", null);
+            Pattern = name;
         }
         
         public static T Construct<T>(Type type)
