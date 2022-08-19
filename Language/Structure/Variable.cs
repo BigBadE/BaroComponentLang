@@ -1,9 +1,11 @@
 ﻿using System;
 using Language.Effects;
+using Language.Util;
 
 namespace Language.Structure
 {
-    public class Variable
+    [Instancable("var %name% [= %value%]")]
+    public class Variable : IMainField
     {
         public readonly IVariableOwner? Parent;
         public readonly object? DefaultValue;
@@ -14,21 +16,6 @@ namespace Language.Structure
             Parent = parent;
             DefaultValue = defaultValue;
             Name = name;
-        }
-        
-        public static Variable Parse(IVariableOwner? owner, string name, string? value)
-        {
-            if (value == null)
-            {
-                return new Variable(name, owner);
-            }
-            Effect? found = Effect.Parse(value);
-            if (found == null)
-            {
-                throw new Exception("Unknown effect " + found);
-            }
-
-            return new Variable(name, owner, found.Precompute());
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Language.Listeners;
+using Language.Listener;
 using Language.Structure;
 
 namespace AST.Tree

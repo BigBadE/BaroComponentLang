@@ -6,11 +6,11 @@ namespace Language.Util
     [AttributeUsage(AttributeTargets.Class)]
     public class InstancableAttribute : Attribute
     {
-        public string Name;
+        public string Pattern;
 
         public InstancableAttribute(string name)
         {
-            Name = name;
+            Pattern = name;
         }
         
         public static T Construct<T>(Type type)

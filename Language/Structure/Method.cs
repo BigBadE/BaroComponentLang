@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using Language.Effects;
 using Language.Expressions;
+using Language.Util;
 
 namespace Language.Structure
 {
-    public class Method : IVariableOwner
+    [Instancable("func %name%[ ]([%value%]){")]
+    public class Method : IVariableOwner, IMainField
     {
         public readonly string Name;
         public Variable[] Args { get; private set; }

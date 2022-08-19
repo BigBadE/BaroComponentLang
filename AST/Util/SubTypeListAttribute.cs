@@ -26,7 +26,7 @@ namespace Language.Util
         public static void InitSubTypeLists()
         {
             _inited = true;
-            Dictionary<Type, List<object>> targets = new();
+            Dictionary<Type, List<Type>> targets = new();
             
             Dictionary<Type, List<FieldInfo>> fields = GetFields(ref targets);
             //Find all types and their needed extenders/interfaces
@@ -64,12 +64,12 @@ namespace Language.Util
             {
                 foreach (FieldInfo fieldInfo in foundFields)
                 {
-                    fieldInfo.SetValue(null, targets[key]);
+                    fieldInfo.SetValue(null, targets[key].Select(type => ExpressionFactory.Wrap(type)));
                 }
             }
         }
 
-        private static Dictionary<Type, List<FieldInfo>> GetFields(ref Dictionary<Type, List<object>> targets)
+        private static Dictionary<Type, List<FieldInfo>> GetFields(ref Dictionary<Type, List<Type>> targets)
         {
             Dictionary<Type, List<FieldInfo>> fields = new();
 
@@ -89,7 +89,7 @@ namespace Language.Util
                 else
                 {
                     fields[found._target] = new List<FieldInfo> {field};
-                    targets[found._target] = new List<object>();
+                    targets[found._target] = new List<Type>();
                 }
             }
 

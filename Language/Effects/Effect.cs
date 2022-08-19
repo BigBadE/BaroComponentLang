@@ -1,25 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Language.Patterns;
+﻿using Language.Expressions;
 using Language.Util;
 
 namespace Language.Effects
 {
-    public abstract class Effect
+    public abstract class Effect : Expression
     {
-        [SubTypeList(typeof(Effect))]
-        public static List<Type> Effects;
-
-        public abstract int Args();
-
-        public abstract object Precompute();
-
-        public abstract Pattern Pattern();
-        
-        public static ParseResult<Effect> Parse(string effect, bool nullable = false)
-        {
-            
-            return null;
-        }
     }
 }
