@@ -73,7 +73,7 @@ namespace Language.Util
                     }
                     else
                     {
-                        fieldInfo.SetValue(null, targets[key].Select(InstancableFactory.Wrap));                        
+                        fieldInfo.SetValue(null, targets[key].Select(InstancableFactory.Wrap).ToList());                        
                     }
                 }
             }

@@ -29,6 +29,10 @@ namespace Language.Util
 
         public static InstancableFactory Wrap(Type type)
         {
+            if (type.GetCustomAttribute<InstancableAttribute>() == null)
+            {
+                throw new Exception("No instancable attribute on " + type);
+            }
             return new InstancableFactory(type, PatternFactory.Compile(type.GetCustomAttribute<InstancableAttribute>()!.Pattern));
         }
     }

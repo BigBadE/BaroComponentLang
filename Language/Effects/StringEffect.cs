@@ -1,7 +1,18 @@
-﻿namespace Language.Effects
+﻿using System.Collections.Generic;
+using Language.Util;
+
+namespace Language.Effects
 {
-    public class StringEffect
+    [Instancable("%string%")]
+    public class StringEffect : Effect
     {
+        private string _string;
         
+        public override object Precompute() => _string;
+
+        public override void Init(List<object>? args)
+        {
+            _string = (string) args![0];
+        }
     }
 }

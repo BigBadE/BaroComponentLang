@@ -11,7 +11,7 @@ public class ASTParser
     [SubTypeList(typeof(IMainField))] 
     public static List<InstancableFactory> MainFields;
     
-    public ASTTree Parse(ASTReader reader)
+    public ASTTree Parse(IASTReader reader)
     {
         if (!SubTypeListAttribute.IsInited())
         {
@@ -61,6 +61,7 @@ public class ASTParser
                     current.Variables.Add(variable);
                     break;
                 case Method method:
+                    method.Init(result.Values);
                     methodParser = new MethodParser(method);
                     break;
                 case Listener listener:

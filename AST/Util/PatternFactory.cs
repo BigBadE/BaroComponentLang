@@ -1,64 +1,84 @@
 ﻿using System;
 using System.Collections.Generic;
-using AST.Pattern;
+using AST.Patterns;
 using Language.Util;
 
 namespace AST.Util
 {
     public static class PatternFactory
     {
-        public static Language.Util.Pattern Compile(string input)
+        public static Pattern Compile(string input)
+        {
+            int start = 0;
+            return new Pattern(Compile(input, ref start).ToArray());
+        }
+        
+        private static List<IPatternPart> Compile(string input, ref int start, char? exit = null)
         {
             List<IPatternPart> parts = new();
             
-            int start = 0;
-            bool special = false;
             for (int i = 0; i < input.Length; i++)
             {
                 char current = input[i];
 
+                if (current == exit)
+                {
+                    start = i+1;
+                    return parts;
+                }
+
                 switch (current)
                 {
+                    case '[':
+                        start = ++i;
+                        parts.Add(new OptionalPatternPart(new Pattern(
+                            Compile(input, ref start, '[').ToArray())));
+                        break;
                     case '%':
-                        string found = input.Substring(start, i-1);
-                        if (special)
-                        {
-                            switch (found)
-                            {
-                                case "value":
-                                    parts.Add(new ValuePatternPart());
-                                    break;
-                                case "number":
-                                    parts.Add(new NumberPatternPart());
-                                    break;
-                                case "name":
-                                    parts.Add(new NamePatternPart());
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            parts.Add(new LiteralPatternPart(found));
-                        }
+                        start = ++i;
+                        string found = (Compile(input, ref start, '%')[0] as LiteralPatternPart)!.Literal;
 
+                        switch (found)
+                        {
+                            case "value":
+                                parts.Add(new ValuePatternPart());
+                                break;
+                            case "number":
+                                parts.Add(new NumberPatternPart());
+                                break;
+                            case "name":
+                                parts.Add(new NamePatternPart());
+                                break;
+                            case "string":
+                                parts.Add(new StringPatternPart());
+                                break;
+                            case "arguments":
+                                parts.Add(new ArgumentPatternPart());
+                                break;
+                            default:
+                                throw new Exception("Unknown special pattern " + found);
+                                break;
+                        }
+                        break;
+                    default: 
+                        parts.Add(new LiteralPatternPart(input.Substring(start, i)));
                         start = i;
-                        special = !special;
                         break;
                 }
             }
 
-            if (start == input.Length)
+            if (exit != null)
             {
-                return new Language.Util.Pattern(parts.ToArray());
-            }
-            
-            if (special)
-            {
-                throw new Exception("Unclosed special argument in pattern " + input);
+                throw new Exception("Unescaped special character in " + input);
             }
 
+            if (start == input.Length)
+            {
+                return parts;
+            }
+            
             parts.Add(new LiteralPatternPart(input[start..]));
-            return new Language.Util.Pattern(parts.ToArray());
+            return parts;
         }
     }
 }

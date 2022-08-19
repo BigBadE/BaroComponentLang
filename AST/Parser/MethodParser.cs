@@ -7,7 +7,7 @@ using Language.Util;
 
 namespace AST.Parser
 {
-    public class MethodParser : IMainField
+    public class MethodParser
     {
         [SubTypeList(typeof(Expression))] 
         public static List<InstancableFactory> Expressions;

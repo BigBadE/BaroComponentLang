@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Language.Effects;
-using Language.Expressions;
 using Language.Util;
 
-namespace AST.Pattern
+namespace AST.Patterns
 {
     public class ValuePatternPart : IPatternPart
     {

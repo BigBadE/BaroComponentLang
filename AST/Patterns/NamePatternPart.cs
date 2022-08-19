@@ -1,6 +1,6 @@
 ﻿using Language.Util;
 
-namespace AST.Pattern
+namespace AST.Patterns
 {
     public class NamePatternPart : IPatternPart
     {

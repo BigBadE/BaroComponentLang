@@ -1,20 +1,20 @@
 ﻿using Language.Util;
 
-namespace AST.Pattern
+namespace AST.Patterns
 {
     public class LiteralPatternPart : IPatternPart
     {
-        private readonly string _literal;
+        public readonly string Literal;
         
         public LiteralPatternPart(string literal)
         {
-            _literal = literal;
+            Literal = literal;
         }
         
         public ParseResult Matches(char[] input, int start)
         {
             int offset = 0;
-            for (int i = 0; i - offset < _literal.Length; i++)
+            for (int i = 0; i - offset < Literal.Length; i++)
             {
                 if (i > input.Length)
                 {
@@ -26,13 +26,13 @@ namespace AST.Pattern
                     offset++;
                     continue;
                 }
-                if (input[start + i] != _literal[i - offset])
+                if (input[start + i] != Literal[i - offset])
                 {
                     return new ParseResult(-1);
                 }
             }
 
-            return new ParseResult(_literal.Length + offset);
+            return new ParseResult(Literal.Length + offset);
         }
 
         public bool Recursable() => false;

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compiler", "Compiler\Compil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Language", "Language\Language.csproj", "{4C915C2C-3D68-421C-B68A-D7B67FD9FD30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{4CF26742-BCFB-4D17-B83A-8FF4E902D383}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{4C915C2C-3D68-421C-B68A-D7B67FD9FD30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C915C2C-3D68-421C-B68A-D7B67FD9FD30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C915C2C-3D68-421C-B68A-D7B67FD9FD30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CF26742-BCFB-4D17-B83A-8FF4E902D383}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CF26742-BCFB-4D17-B83A-8FF4E902D383}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CF26742-BCFB-4D17-B83A-8FF4E902D383}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CF26742-BCFB-4D17-B83A-8FF4E902D383}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

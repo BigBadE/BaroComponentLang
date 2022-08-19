@@ -1,17 +1,22 @@
 ﻿using Language.Util;
 
-namespace AST.Pattern
+namespace AST.Patterns
 {
     public class OptionalPatternPart : IPatternPart
     {
+        private readonly Pattern _pattern;
+        
+        public OptionalPatternPart(Pattern pattern)
+        {
+            _pattern = pattern;
+        }
+        
         public ParseResult Matches(char[] input, int start)
         {
-            throw new System.NotImplementedException();
+            ParseResult result = _pattern.Matches(input, start);
+            return result.Length != -1 ? result : new ParseResult(0);
         }
 
-        public bool Recursable()
-        {
-            throw new System.NotImplementedException();
-        }
+        public bool Recursable() => false;
     }
 }

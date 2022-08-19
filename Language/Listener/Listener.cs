@@ -9,22 +9,22 @@ namespace Language.Listener
     [Instancable("%device%_%name% -> %name%")]
     public class Listener : IMainField
     {
-        private Device _device;
-        private string _connector;
+        public Device Device { get; private set; }
+        public string Connector { get; private set; }
 
-        private string _target;
+        public string Target { get; private set; }
         
         public void Init(List<object> args)
         {
-            _device = (Device) args[0];
-            _connector = (string) args[1];
+            Device = (Device) args[0];
+            Connector = (string) args[1];
 
-            if (!_device.Connections().Contains(_connector))
+            if (!Device.Connections().Contains(Connector))
             {
-                throw new Exception("Unknown connector " + _connector + " in device " + _device);
+                throw new Exception("Unknown connector " + Connector + " in device " + Device);
             }
 
-            _target = (string) args[2];
+            Target = (string) args[2];
         }
     }
 }
