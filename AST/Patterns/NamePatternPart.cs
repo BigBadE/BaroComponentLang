@@ -9,9 +9,9 @@ namespace AST.Pattern
             for (int i = start; i < input.Length; i++)
             {
                 char testing = input[i];
-                if (testing is >= 'a' and <= 'z' or >= 'A' and <= 'Z' or '-' or '_')
+                if (testing is not (>= 'a' and <= 'z' or >= 'A' and <= 'Z' or '-' or '_'))
                 {
-                    
+                    return new ParseResult(i - start, new string(input, start, i));
                 }
             }
             return new ParseResult(input.Length - start, new string(input, start, input.Length-start));

@@ -13,20 +13,26 @@ namespace AST.Pattern
         
         public ParseResult Matches(char[] input, int start)
         {
-            if (input.Length < start + _literal.Length)
+            int offset = 0;
+            for (int i = 0; i - offset < _literal.Length; i++)
             {
-                return new ParseResult(-1);
-            }
-            
-            for (int i = 0; i < _literal.Length; i++)
-            {
-                if (input[start + i] != _literal[i])
+                if (i > input.Length)
+                {
+                    return new ParseResult(-1);
+                }
+                
+                if (char.IsWhiteSpace(input[start + i]))
+                {
+                    offset++;
+                    continue;
+                }
+                if (input[start + i] != _literal[i - offset])
                 {
                     return new ParseResult(-1);
                 }
             }
 
-            return new ParseResult(_literal.Length);
+            return new ParseResult(_literal.Length + offset);
         }
 
         public bool Recursable() => false;
