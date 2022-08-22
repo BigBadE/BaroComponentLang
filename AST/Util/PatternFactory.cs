@@ -18,13 +18,18 @@ namespace AST.Util
         {
             List<IPatternPart> parts = new();
             
-            for (int i = 0; i < input.Length; i++)
+            for (int i = start; i < input.Length; i++)
             {
                 char current = input[i];
 
                 if (current == exit)
                 {
-                    start = i+1;
+                    if (i != start)
+                    {
+                        parts.Add(new LiteralPatternPart(input.Substring(start, i-1)));
+                    }
+
+                    start = i;
                     return parts;
                 }
 
@@ -38,7 +43,8 @@ namespace AST.Util
                         
                         start = ++i;
                         parts.Add(new OptionalPatternPart(new Pattern(
-                            Compile(input, ref start, '[').ToArray())));
+                            Compile(input, ref start, ']').ToArray())));
+                        i = start;
                         break;
                     case '%':
                         if (i != start)
@@ -48,7 +54,8 @@ namespace AST.Util
 
                         start = ++i;
                         string found = (Compile(input, ref start, '%')[0] as LiteralPatternPart)!.Literal;
-
+                        start = i;
+                        
                         switch (found)
                         {
                             case "value":
@@ -78,11 +85,6 @@ namespace AST.Util
                 throw new Exception("Unescaped special character in " + input);
             }
 
-            if (exit != null)
-            {
-                var test = 1 + 1;
-            }
-            
             if (start == input.Length)
             {
                 return parts;
