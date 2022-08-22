@@ -11,10 +11,10 @@ namespace Tests.Integration.Patterns
         [Test]
         public void ParserTest()
         {
-            /*Test(@"var test = 12
+            Test(@"var test = 12
 func testing() {
 var test2 = ""string""
-}");*/
+}");
         }
 
         private void Test(string input)

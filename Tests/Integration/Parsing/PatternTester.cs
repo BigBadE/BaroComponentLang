@@ -10,8 +10,10 @@ namespace Tests.Integration.Parsing
         [Test]
         public void PatternTest()
         {
-            Test("basic literal", new [] { "basicliteral", "basic literal" }, "not basic literal");
-            Test("[optional] literal", new []{ "optional literal", "literal"}, "optional");
+            Test("basic literal", new[] { "basic literal" }, "not basic literal", "basicliteral");
+            Test("[optional ]literal", new[] { "optional literal", "literal" }, "optional");
+            Test("var %name%", new[] { "var test_name-", "var _" }, "var test()");
+            Test("= %number%", new[] { "= 12", "= 24.7" }, "= one");
         }
 
         private static void Test(string pattern, string[] pass, params string[] fails)
@@ -19,11 +21,12 @@ namespace Tests.Integration.Parsing
             Pattern testing = PatternFactory.Compile(pattern);
             foreach (string passing in pass)
             {
-                Assert.AreNotEqual(-1, testing.Matches(passing.ToCharArray(), 0).Length);   
+                Assert.AreNotEqual(-1, testing.Matches(passing.ToCharArray(), 0, passing.Length).Length);
             }
+
             foreach (string failing in fails)
             {
-                Assert.AreEqual(-1, testing.Matches(failing.ToCharArray(), 0).Length);   
+                Assert.AreEqual(-1, testing.Matches(failing.ToCharArray(), 0, failing.Length).Length);
             }
         }
     }

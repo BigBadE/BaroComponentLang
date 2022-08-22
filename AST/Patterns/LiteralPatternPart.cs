@@ -22,16 +22,18 @@ namespace AST.Patterns
                 {
                     return new ParseResult(-1);
                 }
-                
-                if (char.IsWhiteSpace(input[start + i]))
+
+                if (input[start + i] == Literal[i - offset])
                 {
-                    offset++;
                     continue;
                 }
-                if (input[start + i] != Literal[i - offset])
+                
+                if (!char.IsWhiteSpace(input[start + i]))
                 {
                     return new ParseResult(-1);
                 }
+                    
+                offset++;
             }
        
             return new ParseResult(Literal.Length + offset);

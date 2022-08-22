@@ -5,7 +5,7 @@ using Language.Util;
 
 namespace Language.Structure
 {
-    [Instancable("var %name% [= %value%]")]
+    [Instancable("var %name%[=%value%]")]
     public class Variable : Expression, IMainField
     {
         public string Name;

@@ -6,7 +6,7 @@ using Language.Util;
 
 namespace Language.Structure
 {
-    [Instancable("func %name%([%arguments%]) {")]
+    [Instancable("func %name%([%arguments%]){")]
     public class Method : IVariableOwner, IMainField
     {
         public string Name;

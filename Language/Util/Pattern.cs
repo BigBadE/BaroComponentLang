@@ -45,7 +45,7 @@ namespace Language.Util
                     start += output.Length;
                 }
 
-                if (start < length && (!_parts[0].Recursable() || results.Any()))
+                if (start < length && !_parts[0].Recursable())
                 {
                     return new ParseResult(-1);
                 }

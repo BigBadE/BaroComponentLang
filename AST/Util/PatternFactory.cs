@@ -10,7 +10,6 @@ namespace AST.Util
         public static Pattern Compile(string input)
         {
             int start = 0;
-            input = input.Replace(" ", null);
             return new Pattern(Compile(input, ref start).ToArray());
         }
         
@@ -26,10 +25,10 @@ namespace AST.Util
                 {
                     if (i != start)
                     {
-                        parts.Add(new LiteralPatternPart(input.Substring(start, i-1)));
+                        parts.Add(new LiteralPatternPart(input.Substring(start, i-start)));
                     }
 
-                    start = i;
+                    start = i+1;
                     return parts;
                 }
 
@@ -38,7 +37,7 @@ namespace AST.Util
                     case '[':
                         if (i != start)
                         {
-                            parts.Add(new LiteralPatternPart(input.Substring(start, i)));
+                            parts.Add(new LiteralPatternPart(input.Substring(start, i-start)));
                         }
                         
                         start = ++i;
@@ -49,12 +48,12 @@ namespace AST.Util
                     case '%':
                         if (i != start)
                         {
-                            parts.Add(new LiteralPatternPart(input.Substring(start, i)));
+                            parts.Add(new LiteralPatternPart(input.Substring(start, i-start)));
                         }
 
                         start = ++i;
                         string found = (Compile(input, ref start, '%')[0] as LiteralPatternPart)!.Literal;
-                        start = i;
+                        i = start;
                         
                         switch (found)
                         {
