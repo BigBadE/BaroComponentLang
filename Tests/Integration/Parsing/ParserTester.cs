@@ -1,12 +1,12 @@
 ﻿using AST.Parser;
 using NUnit.Framework;
 
-namespace Tests.Integration.Patterns
+namespace Tests.Integration.Parsing
 {
     [TestFixture]
     public class ParserTester
     {
-        private ASTParser _parser = new ASTParser();
+        private readonly ASTParser _parser = new();
         
         [Test]
         public void ParserTest()
