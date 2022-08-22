@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Language.Util
@@ -18,6 +17,11 @@ namespace Language.Util
             if (length == -1)
             {
                 length = input.Length;
+            }
+            
+            if (!_parts.Any())
+            {
+                return new ParseResult(-1);
             }
             
             int oldStart = start;
@@ -53,6 +57,11 @@ namespace Language.Util
                     }
                 }
 
+                if (!_parts.Any())
+                {
+                    return new ParseResult(-1);
+                }
+                
                 if (start < length && (!_parts[0].Recursable() || results.Any()))
                 {
                     return new ParseResult(-1);

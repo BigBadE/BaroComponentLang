@@ -2,7 +2,7 @@
 using Language.Util;
 using NUnit.Framework;
 
-namespace Tests.Integration.Patterns
+namespace Tests.Integration.Parsing
 {
     [TestFixture]
     public class PatternTester

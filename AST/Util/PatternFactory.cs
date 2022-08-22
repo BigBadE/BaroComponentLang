@@ -78,6 +78,11 @@ namespace AST.Util
                 throw new Exception("Unescaped special character in " + input);
             }
 
+            if (exit != null)
+            {
+                var test = 1 + 1;
+            }
+            
             if (start == input.Length)
             {
                 return parts;
