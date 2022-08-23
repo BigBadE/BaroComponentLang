@@ -6,8 +6,14 @@ namespace AST.Patterns
     {
         public ParseResult Matches(char[] input, int start)
         {
+            bool negative = false;
             float current = 0;
             float decimalValue = -1;
+            if (input[start] == '-')
+            {
+                start++;
+                negative = true;
+            }
             for (int i = start; i < input.Length; i++)
             {
                 switch (input[i])
@@ -32,8 +38,16 @@ namespace AST.Patterns
                         break;
                     }
                     default:
+                        if (negative)
+                        {
+                            current *= -1;
+                        }
                         return new ParseResult(i - start, current);
                 }
+            }
+            if (negative)
+            {
+                current *= -1;
             }
             return new ParseResult(input.Length - start, current);
         }
