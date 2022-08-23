@@ -8,19 +8,12 @@ namespace Language.Structure
     [Instancable("var %name%[=%value%]")]
     public class Variable : Expression, IMainField
     {
+        [Argument(0)]
         public string Name;
+        [Argument(1, true)]
         public Effect? DefaultValue;
 
         public override object? Precompute() => DefaultValue?.Precompute() ?? null;
-
-        public override void Init(List<object>? args)
-        {
-            Name = (string) args![0];
-            if (args.Count > 0)
-            {
-                DefaultValue = (Effect) args[1];
-            }
-        }
 
         public string ToString(bool dropVar)
         {
@@ -28,10 +21,8 @@ namespace Language.Structure
             {
                 return dropVar ? Name : "var " + Name;
             }
-            else
-            {
-                return dropVar ? Name + " = " + DefaultValue : "var " + Name + " = " + DefaultValue;
-            }
+
+            return dropVar ? Name + " = " + DefaultValue : "var " + Name + " = " + DefaultValue;
         }
 
         public override string ToString()

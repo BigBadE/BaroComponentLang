@@ -1,30 +1,155 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using Language.Types;
 using Language.Util;
 
 namespace Language.Effects
 {
-    [Instancable("%value% + %value%")]
-    public class AdditionEffect : Effect
+    public abstract class MathEffect : Effect
     {
-        private Effect first;
-        private Effect second;
+        [Argument(0)] protected Effect First;
+        [Argument(1)] protected Effect Second;
+    }
+
+    [Instancable("%value%+%value%")]
+    public class AdditionEffect : MathEffect
+    {
+        public override TypesEnum ReturnType() => 
+            First.ReturnType() == TypesEnum.String || Second.ReturnType() == TypesEnum.String
+                ? TypesEnum.String
+                : TypesEnum.Number;
 
         public override object? Precompute()
         {
-            if (first.Precompute() == null || second.Precompute() == null)
+            object? firstValue = First.Precompute(), secondValue = Second.Precompute();
+            if (firstValue == null || secondValue == null)
             {
                 return null;
             }
-            else
+            if (ReturnType() == TypesEnum.String)
             {
-                return first.Precompute() + second.Precompute();
+                return (string) firstValue + (string) secondValue;
             }
-        } 
-
-        public override void Init(List<object>? args)
-        {
-            first = (Effect) args![0];
-            second = (Effect) args[1];
+            
+            return (float) firstValue + (float) secondValue;
         }
+    }
+
+    [Instancable("%value%-%value%")]
+    public class SubtractionEffect : MathEffect
+    {
+        public override TypesEnum ReturnType() => TypesEnum.Number;
+
+        public override object? Precompute()
+        {
+            object? firstValue = First.Precompute(), secondValue = Second.Precompute();
+            
+            if (firstValue is not float firstNumber || secondValue is not float secondNumber)
+            {
+                return null;
+            }
+
+            return firstNumber - secondNumber;
+        }
+    }
+    
+    [Instancable("%value%*%value%")]
+    public class MultiplicationEffect : MathEffect
+    {
+        public override TypesEnum ReturnType() => 
+            First.ReturnType() == TypesEnum.String || Second.ReturnType() == TypesEnum.String
+                ? TypesEnum.String
+                : TypesEnum.Number;
+
+        public override object? Precompute()
+        {
+            object? firstValue = First.Precompute(), secondValue = Second.Precompute();
+            if (firstValue == null || secondValue == null)
+            {
+                return null;
+            }
+
+            switch (firstValue)
+            {
+                case string firstString:
+                    if (secondValue is float secondNumber)
+                    {
+                        return string.Concat(Enumerable.Repeat(firstString, (int) secondNumber));
+                    }
+                    break;
+                case float firstNumber:
+                    if (secondValue is float secondFloat)
+                    {
+                        return firstNumber * secondFloat;
+                    }
+                    break;
+            }
+
+            return null;
+        }
+    }
+    
+    [Instancable("%value%/%value%")]
+    public class DivisionEffect : MathEffect
+    {
+        public override TypesEnum ReturnType() => TypesEnum.Number;
+
+        public override object? Precompute()
+        {
+            object? firstValue = First.Precompute(), secondValue = Second.Precompute();
+            
+            if (firstValue is not float firstNumber || secondValue is not float secondNumber)
+            {
+                return null;
+            }
+
+            return firstNumber / secondNumber;
+        }
+    }
+    
+    [Instancable("%value%\\%%value%")]
+    public class ModuloEffect : MathEffect
+    {
+        public override TypesEnum ReturnType() => TypesEnum.Number;
+
+        public override object? Precompute()
+        {
+            object? firstValue = First.Precompute(), secondValue = Second.Precompute();
+            
+            if (firstValue is not float firstNumber || secondValue is not float secondNumber)
+            {
+                return null;
+            }
+
+            return firstNumber % secondNumber;
+        }
+    }
+    
+    [Instancable("%value%^%value%")]
+    public class PowerEffect : MathEffect
+    {
+        public override TypesEnum ReturnType() => TypesEnum.Number;
+
+        public override object? Precompute()
+        {
+            object? firstValue = First.Precompute(), secondValue = Second.Precompute();
+            
+            if (firstValue is not float firstNumber || secondValue is not float secondNumber)
+            {
+                return null;
+            }
+
+            return Math.Pow(firstNumber, secondNumber);
+        }
+    }
+    
+    [Instancable("(%value%)0")]
+    public class ParenthesisEffect : Effect
+    {
+        [Argument(0)] public Effect Value;
+        
+        public override TypesEnum ReturnType() => Value.ReturnType();
+
+        public override object? Precompute() => Value.Precompute();
     }
 }

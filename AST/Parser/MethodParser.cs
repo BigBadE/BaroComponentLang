@@ -42,7 +42,7 @@ namespace AST.Parser
                 }
                 
                 found = expression.Instantiate<Expression>();
-                found.Init(result.Values);
+                ASTParser.Init(found, result.Values);
                 break;
             }
 

@@ -18,7 +18,7 @@ namespace AST.Patterns
             {
                 start += result.Length;
                 Variable found = new();
-                found.Init(result.Values);
+                ASTParser.Init(found, result.Values);
                 args.Add(found);
                 
                 if (input[start] == ',')

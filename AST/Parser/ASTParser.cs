@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using AST.Parser;
 using AST.Tree;
 using Language.Listener;
@@ -57,20 +59,60 @@ public class ASTParser
                 case null:
                     throw new Exception("Unknown line " + rawLine);
                 case Variable variable:
-                    variable.Init(result.Values);
+                    Init(variable, result.Values);
                     current.Variables.Add(variable);
                     break;
                 case Method method:
-                    method.Init(result.Values);
+                    Init(method, result.Values);
                     methodParser = new MethodParser(method);
                     break;
                 case Listener listener:
-                    listener.Init(result.Values);
+                    Init(listener, result.Values);
                     current.Listeners.Add(listener, (string) result.Values[2]);
                     break;
             }
         }
 
         return current;
+    }
+
+    public static void Init(object target, List<object>? values)
+    {
+        if (values == null)
+        {
+            if (target.GetType().GetFields().Any(field => field.GetCustomAttribute<ArgumentAttribute>() != null))
+            {
+                throw new Exception("No arguments for " + target.GetType());
+            }
+
+            return;
+        }
+        
+        int toUse = values.Count;
+        foreach (FieldInfo field in target.GetType().GetFields())
+        {
+            ArgumentAttribute? argumentAttribute = field.GetCustomAttribute<ArgumentAttribute>();
+            if (argumentAttribute == null)
+            {
+                continue;
+            }
+
+            if (argumentAttribute.Number > values.Count)
+            {
+                if (!argumentAttribute.Nullable)
+                {
+                    throw new Exception("Null value for argument field " + field.Name);
+                }
+                return;
+            }
+
+            toUse--;
+            field.SetValue(target, values[argumentAttribute.Number]);
+        }
+
+        if (toUse != 0)
+        {
+            throw new Exception("Unused argument for type " + target.GetType());
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using AST.Patterns;
 using Language.Util;
 
@@ -16,7 +17,8 @@ namespace AST.Util
         private static List<IPatternPart> Compile(string input, ref int start, char? exit = null)
         {
             List<IPatternPart> parts = new();
-            
+            StringBuilder builder = new();
+            bool ignore = false;
             for (int i = start; i < input.Length; i++)
             {
                 char current = input[i];
@@ -34,24 +36,38 @@ namespace AST.Util
 
                 switch (current)
                 {
+                    case '\\':
+                        ignore = true;
+                        break;
                     case '[':
+                        if (ignore)
+                        {
+                            break;
+                        }
                         if (i != start)
                         {
-                            parts.Add(new LiteralPatternPart(input.Substring(start, i-start)));
+                            parts.Add(new LiteralPatternPart(builder.ToString()));
+                            builder.Clear();
                         }
                         
-                        start = ++i;
+                        start = i+1;
                         parts.Add(new OptionalPatternPart(new Pattern(
                             Compile(input, ref start, ']').ToArray())));
                         i = start;
                         break;
                     case '%':
+                        if (ignore)
+                        {
+                            break;
+                        }
+                        
                         if (i != start)
                         {
-                            parts.Add(new LiteralPatternPart(input.Substring(start, i-start)));
+                            parts.Add(new LiteralPatternPart(builder.ToString()));
+                            builder.Clear();
                         }
 
-                        start = ++i;
+                        start = i+1;
                         string found = (Compile(input, ref start, '%')[0] as LiteralPatternPart)!.Literal;
                         i = start;
                         
@@ -76,6 +92,14 @@ namespace AST.Util
                                 throw new Exception("Unknown special pattern " + found);
                         }
                         break;
+                    default:
+                        if (ignore)
+                        {
+                            ignore = false;
+                            builder.Append('\\');
+                        }
+                        builder.Append(current);
+                        break;
                 }
             }
 
@@ -89,7 +113,7 @@ namespace AST.Util
                 return parts;
             }
             
-            parts.Add(new LiteralPatternPart(input[start..]));
+            parts.Add(new LiteralPatternPart(builder.ToString()));
             return parts;
         }
     }
