@@ -13,12 +13,6 @@ namespace Language.Structure
         public Variable[] Args { get; private set; }
         public List<Expression> Expressions = new();
 
-        public void Init(List<object> args)
-        {
-            Name = (string) args[0];
-            Args = (Variable[]) args[1];
-        }
-
         public override string ToString()
         {
             StringBuilder builder = new();

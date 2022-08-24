@@ -12,7 +12,7 @@ namespace Language.Util
     [AttributeUsage(AttributeTargets.Field)]
     public class SubTypeListAttribute : Attribute
     {
-        private static bool _inited = false;
+        private static bool _inited;
 
         private readonly Type _target;
         private readonly bool _dontWrap;

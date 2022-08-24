@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AST.Tree;
+using Compiler.Components;
 using Compiler.Structure;
 using Language.Listener;
 using Language.Structure;
@@ -41,10 +42,8 @@ namespace Compiler
 
         private void CompileMethod(Method target, Connector input)
         {
-            foreach (Variable arg in target.Args)
-            {
-                arg.Compile(input);
-            }
+            target.Expressions.Last().Compile(new Connector(
+                new GameComponent(MiscComponents.NoOperationComponent.Instance), "null"));
         }
     }
 }

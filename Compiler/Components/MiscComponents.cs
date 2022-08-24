@@ -55,5 +55,14 @@
 
             public string[] OutputConnections() => new[] {"signal_in", "signal_out"};
         }
+        
+        public class NoOperationComponent : IComponent
+        {
+            public static readonly IComponent Instance = new NoOperationComponent();
+            
+            public string[] InputConnections() => new[] {"null"};
+
+            public string[] OutputConnections() => new[] {"null"};
+        }
     }
 }

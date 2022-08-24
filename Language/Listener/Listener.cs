@@ -1,30 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Compiler.Components;
 using Language.Structure;
 using Language.Util;
 
 namespace Language.Listener
 {
-    [Instancable("%device%_%name% -> %name%")]
+    [Instancable("%device%_%name%->%name%")]
     public class Listener : IMainField
     {
-        public Device Device { get; private set; }
-        public string Connector { get; private set; }
+        [Argument(0)] public IComponent device;
+        [Argument(1)] public string connector;
+        [Argument(2)] public string method;
 
-        public string Target { get; private set; }
-        
-        public void Init(List<object> args)
+        public override string ToString()
         {
-            Device = (Device) args[0];
-            Connector = (string) args[1];
-
-            if (!Device.Connections().Contains(Connector))
-            {
-                throw new Exception("Unknown connector " + Connector + " in device " + Device);
-            }
-
-            Target = (string) args[2];
+            return device + "_" + connector + " -> " + method;
         }
     }
 }

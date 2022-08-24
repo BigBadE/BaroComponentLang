@@ -68,7 +68,7 @@ public class ASTParser
                     break;
                 case Listener listener:
                     Init(listener, result.Values);
-                    current.Listeners.Add(listener, (string) result.Values[2]);
+                    current.Listeners.Add(listener);
                     break;
             }
         }

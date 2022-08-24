@@ -1,31 +1,39 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Compiler.Components;
 using Language.Effects;
 using Language.Util;
 
 namespace AST.Patterns
 {
-    public class ValuePatternPart : IPatternPart
+    public class DevicePatternPart : IPatternPart
     {
-        [SubTypeList(typeof(Effect))]
-        public static List<InstancableFactory> Expressions;
-
         public ParseResult Matches(char[] input, int start)
         {
-            int lowest = int.MaxValue;
-            InstancableFactory? lowestFactory = null;
-            foreach (InstancableFactory expression in Expressions)
+            foreach (IComponent component in IComponent.Components)
             {
-                int length = expression.Matches(input, start).Length;
-                if (length > lowest)
+                string name = component.ToString()!;
+                if (input.Length - start > name.Length)
                 {
                     continue;
                 }
-                
-                lowest = length;
-                lowestFactory = expression;
+
+                bool failed = false;
+                for (int i = 0; i < name.Length; i++)
+                {
+                    if (input[start + i] != name[i])
+                    {
+                        failed = true;
+                    }
+                }
+
+                if (!failed)
+                {
+                    return new ParseResult(name.Length, name);
+                }
             }
 
-            return lowest == int.MaxValue ? new ParseResult(-1) : new ParseResult(lowest, lowestFactory);
+            return new ParseResult(-1);
         }
 
         public bool Recursable() => true;

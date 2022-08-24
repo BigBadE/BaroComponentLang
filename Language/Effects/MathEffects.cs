@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Compiler.Structure;
 using Language.Types;
 using Language.Util;
 

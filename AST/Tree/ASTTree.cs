@@ -7,27 +7,21 @@ namespace AST.Tree
 {
     public class ASTTree
     {
-        public Dictionary<Listener, string> Listeners = new();
+        public List<Listener> Listeners = new();
         public List<Variable> Variables = new();
         public List<Method> Methods = new();
 
         public override string ToString()
         {
             StringBuilder builder = new();
-            foreach (KeyValuePair<Listener,string> pair in Listeners)
+            foreach (Listener listener in Listeners)
             {
-                builder.Append(pair.Key.Device).Append('_').Append(pair.Key.Connector).Append(" -> ")
-                    .Append(pair.Value).Append('\n');
+                builder.Append(listener).Append('\n');
             }
 
             foreach (Variable variable in Variables)
             {
-                builder.Append("var ").Append(variable.Name);
-                if (variable.DefaultValue != null)
-                {
-                    builder.Append(" = ").Append(variable.DefaultValue);
-                }
-                builder.Append('\n');
+                builder.Append(variable).Append('\n');
             }
 
             foreach (Method method in Methods)

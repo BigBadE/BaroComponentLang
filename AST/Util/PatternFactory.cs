@@ -88,6 +88,9 @@ namespace AST.Util
                             case "arguments":
                                 parts.Add(new ArgumentPatternPart());
                                 break;
+                            case "device":
+                                parts.Add(new DevicePatternPart());
+                                break;
                             default:
                                 throw new Exception("Unknown special pattern " + found);
                         }
